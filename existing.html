@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HerComfort — Login</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    /* === Page background (same pink + image) === */
+    :root{
+      --pink-1:#ff87b7;
+      --pink-2:#ff3f8e;
+      --glass: rgba(255,180,220,0.20);
+      --accent:#ff4f9d;
+      --accent-strong:#ff2f92;
+      --focus: #ff4f9d;
+      --card-width:420px;
+    }
+
+    html,body{
+      height:100%;
+      margin:0;
+    }
+
+    body {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:"Poppins",sans-serif;
+      background:
+        linear-gradient(135deg, rgba(255,135,183,0.65), rgba(255,63,142,0.70)),
+        url("https://img.sanishtech.com/u/9b65f1d47da6b06e5159ea46631a6b8c.jpg");
+      background-size:cover;
+      background-position:center;
+      color:#fff;
+      overflow:hidden;
+    }
+
+    /* subtle overlay to keep contrast */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.03));
+      pointer-events:none;
+    }
+
+    /* card */
+    .card{
+      width:var(--card-width);
+      max-width:92%;
+      padding:36px;
+      border-radius:22px;
+      background:var(--glass);
+      backdrop-filter:blur(14px);
+      box-shadow:0 12px 40px rgba(255,60,130,0.45);
+      border:1px solid rgba(255,255,255,0.12);
+      position:relative;
+      z-index:10;
+      text-align:center;
+      animation:cardIn .7s cubic-bezier(.2,.9,.2,1);
+    }
+
+    @keyframes cardIn{
+      from{transform:translateY(18px);opacity:0}
+      to{transform:translateY(0);opacity:1}
+    }
+
+    .brand {
+      margin-bottom:8px;
+      font-weight:600;
+      font-size:1.8rem;
+      color: #fff;
+      letter-spacing:0.6px;
+      text-shadow:0 6px 18px rgba(255,80,140,0.06);
+    }
+
+    .subtitle{
+      font-size:0.95rem;
+      opacity:0.92;
+      margin-bottom:18px;
+    }
+
+    label{
+      display:block;
+      text-align:left;
+      font-size:0.95rem;
+      margin-bottom:6px;
+      opacity:0.95;
+    }
+
+    .field{
+      margin-bottom:16px;
+      text-align:left;
+    }
+
+    input[type="text"],
+    input[type="password"]{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:none;
+      outline:none;
+      background: rgba(255,255,255,0.25);
+      color:#fff;
+      font-size:14px;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.15);
+      transition: box-shadow .18s, transform .12s;
+    }
+
+    input::placeholder{ color: rgba(255,255,255,0.85); }
+
+    input:focus{
+      box-shadow: 0 0 14px rgba(255,79,165,0.24), inset 0 2px 8px rgba(0,0,0,0.18);
+      transform: translateY(-1px);
+      outline: none;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .btn{
+      padding:12px 18px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      background: linear-gradient(90deg,var(--accent), #ff73b9);
+      color:#fff;
+      box-shadow:0 8px 24px rgba(255,79,165,0.20);
+      transition: transform .12s ease, box-shadow .12s;
+      min-width:140px;
+    }
+
+    .btn:hover{ transform: translateY(-3px); box-shadow:0 18px 38px rgba(255,79,165,0.22); }
+
+    .ghost{
+      padding:10px 14px;
+      border-radius:14px;
+      background: rgba(255,255,255,0.12);
+      color:#fff;
+      border: 1px solid rgba(255,255,255,0.06);
+      cursor:pointer;
+    }
+
+    .small{
+      font-size:0.9rem;
+      opacity:0.9;
+    }
+
+    .links{ margin-top:12px; display:flex; justify-content:space-between; gap:12px; align-items:center; font-size:0.9rem; }
+    .links a{ color: #ffe6f0; text-decoration:none; opacity:0.95; }
+    .links a:hover{ text-decoration:underline; color:#fff; }
+
+    /* floating flower burst on click (for fun, reuses created .flower in JS) */
+    .flower{
+      position:fixed;
+      font-size:18px;
+      pointer-events:none;
+      transform: translate(-50%,-50%);
+      animation: floatUp 1.2s ease-out forwards;
+      z-index:9999;
+    }
+    @keyframes floatUp{
+      0%{ opacity:1; transform: translate(-50%,-50%) scale(1) rotate(0deg) }
+      100%{ opacity:0; transform: translate(-50%,-150%) scale(0.5) rotate(40deg) }
+    }
+
+    @media (max-width:480px){
+      .card{ padding:22px; width:92%; border-radius:16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="card" role="main" aria-labelledby="loginTitle">
+    <div id="loginTitle" class="brand">HerComfort</div>
+    <div class="subtitle">Welcome back — sign in to continue</div>
+
+    <form id="loginForm" action="#" method="post" autocomplete="on" novalidate>
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" placeholder="your.username" required autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn" id="signInBtn">Sign In</button>
+        <button type="button" class="ghost" id="forgotBtn">Forgot?</button>
+      </div>
+
+      <div class="links" style="margin-top:14px;">
+        <span class="small">New here? <a href="#">Create account</a></span>
+        <span class="small"><a href="#">Help</a></span>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // small UX: show floating flower burst when user clicks Sign In (visual delight)
+    function createFlower(x,y){
+      const f = document.createElement('div');
+      f.className = 'flower';
+      const petals = ['🌸','🌺','💮','🌼'];
+      f.textContent = petals[Math.floor(Math.random()*petals.length)];
+      f.style.left = x + 'px';
+      f.style.top = y + 'px';
+      document.body.appendChild(f);
+      setTimeout(()=> f.remove(),1200);
+    }
+
+    document.getElementById('signInBtn').addEventListener('click', function(e){
+      // visual only — form will still submit if needed
+      const rect = e.target.getBoundingClientRect();
+      createFlower(rect.left + rect.width/2, rect.top + rect.height/2 - 10);
+      // basic validation demo
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      if(!u || !p){
+        e.preventDefault();
+        if(!u) document.getElementById('username').focus();
+        else document.getElementById('password').focus();
+        return;
+      }
+      // replace with real submit flow as needed
+      e.preventDefault();
+     window.location.href = "index.html";
+
+    });
+
+    document.getElementById('forgotBtn').addEventListener('click', function(){
+      alert('Password recovery flow — implement as needed.');
+    });
+  </script>
+
+</body>
+</html>

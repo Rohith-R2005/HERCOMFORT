@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New User Registration</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Poppins", sans-serif;
+
+        /* 🌸 Background Image + Pink Gradient */
+        background:
+            linear-gradient(135deg, rgba(255,135,183,0.65), rgba(255,63,142,0.70)),
+            url("https://img.sanishtech.com/u/9b65f1d47da6b06e5159ea46631a6b8c.jpg");
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        color: white;
+        overflow: hidden;
+    }
+
+    .card {
+        width: 420px;
+        padding: 35px;
+
+        background: rgba(255, 180, 220, 0.20);
+        border-radius: 25px;
+        backdrop-filter: blur(18px);
+
+        box-shadow: 0 0 35px rgba(255, 60, 130, 0.5);
+        animation: fadeIn 1s ease-out;
+        position: relative;
+        z-index: 10;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 2.1rem;
+        font-weight: 600;
+    }
+
+    /* Step Bar */
+    .progress-container {
+        margin-bottom: 25px;
+    }
+
+    .step-text {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        width: 0%;
+        height: 100%;
+        background: #ff2f92;
+        transition: 0.4s ease-in-out;
+    }
+
+    label {
+        font-size: 0.95rem;
+        opacity: 0.9;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0 20px;
+        border: none;
+        border-radius: 12px;
+        outline: none;
+        background: rgba(255,255,255,0.25);
+        color: #fff;
+        transition: 0.3s;
+    }
+
+    input:focus {
+        box-shadow: 0 0 12px #ff4f9d;
+    }
+
+    .btn, .back-btn {
+        padding: 13px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: 0.3s ease;
+    }
+
+    .btn {
+        width: 48%;
+        background: #ff4f9d;
+        color: white;
+        font-weight: 600;
+    }
+
+    .btn:hover {
+        background: #ff9acb;
+        transform: scale(1.05);
+    }
+
+    .back-btn {
+        width: 48%;
+        background: rgba(255,150,200,0.4);
+        color: white;
+    }
+
+    .back-btn:hover {
+        background: rgba(255,200,230,0.8);
+        color: black;
+    }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .step {
+        display: none;
+    }
+
+    .active {
+        display: block;
+        animation: fadeIn 0.6s ease;
+    }
+
+    .flower {
+        position: absolute;
+        font-size: 24px;
+        pointer-events: none;
+        animation: floatUp 1.5s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(-120px) scale(0.6) rotate(180deg); opacity: 0; }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(25px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media(max-width: 480px) {
+        .card { width: 90%; padding: 25px; }
+    }
+</style>
+
+
+    
+</head>
+<body>
+
+<div class="card">
+
+    <h2>New User Registration</h2>
+
+    <div class="progress-container">
+        <div class="step-text" id="stepText">Step 1 of 9</div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <form id="regForm">
+
+        <div class="step active">
+            <label>Name</label>
+            <input type="text" required />
+        </div>
+
+        <div class="step">
+            <label>Username</label>
+            <input type="text" required />
+        </div>
+
+        <div class="step">
+            <label>Email</label>
+            <input type="email" required />
+        </div>
+
+        <div class="step">
+            <label>Password</label>
+            <input type="password" required />
+        </div>
+
+        <div class="step">
+            <label>Mobile Number</label>
+            <input type="tel" pattern="[0-9]{10}" required />
+        </div>
+
+        <div class="step">
+            <label>Age</label>
+            <input type="number" required />
+        </div>
+
+        <div class="step">
+            <label>Height (cm)</label>
+            <input type="number" required />
+        </div>
+
+        <div class="step">
+            <label>Weight (kg)</label>
+            <input type="number" required />
+        </div>
+
+        <div class="step">
+            <label>Menstruation Cycle Date</label>
+            <input type="date" required />
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" class="back-btn" id="backBtn" style="display: none;">Back</button>
+            <button type="button" class="btn" id="nextBtn">Next</button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+    const steps = document.querySelectorAll(".step");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const stepText = document.getElementById("stepText");
+    const progressFill = document.getElementById("progressFill");
+
+    let currentStep = 0;
+
+    function updateUI() {
+        steps.forEach(step => step.classList.remove("active"));
+        steps[currentStep].classList.add("active");
+
+        stepText.innerHTML = `Step ${currentStep + 1} of ${steps.length}`;
+        progressFill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+
+        backBtn.style.display = currentStep === 0 ? "none" : "block";
+
+        nextBtn.innerText = currentStep === steps.length - 1 ? "Register" : "Next";
+    }
+
+    function createFlowerAnimation(x, y) {
+        const flower = document.createElement("div");
+        flower.classList.add("flower");
+
+        const flowers = ["🌸", "🌺", "💮", "🌼", "🌻"];
+        flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+
+        flower.style.left = x - 10 + "px";
+        flower.style.top = y - 10 + "px";
+
+        document.body.appendChild(flower);
+
+        setTimeout(() => flower.remove(), 1500);
+    }
+
+    function animateButton(event) {
+        const x = event.clientX;
+        const y = event.clientY;
+
+        for (let i = 0; i < 6; i++) {
+            setTimeout(() => {
+                createFlowerAnimation(x + (Math.random() * 40 - 20), y + (Math.random() * 40 - 20));
+            }, i * 120);
+        }
+    }
+
+    nextBtn.addEventListener("click", (e) => {
+        animateButton(e);
+
+        let input = steps[currentStep].querySelector("input");
+        if (input && input.value.trim() === "") {
+            input.style.boxShadow = "0 0 12px red";
+            return;
+        } else {
+            input.style.boxShadow = "none";
+        }
+
+        if (currentStep < steps.length - 1) {
+            currentStep++;
+            updateUI();
+        } else {
+            window.location.href = "index.html";
+
+        }
+    });
+
+    backBtn.addEventListener("click", (e) => {
+        animateButton(e);
+
+        if (currentStep > 0) {
+            currentStep--;
+            updateUI();
+        }
+    });
+
+    updateUI();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9acb, #ff6fb4, #ffb3da);
+      background-size: 300% 300%;
+      animation: bgMove 8s ease infinite;
+      font-family: "Poppins", sans-serif;
+    }
+
+    /* Floating Glass Box */
+    .main-box {
+      width: 420px;
+      padding: 35px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(18px);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 10px 40px rgba(255, 0, 140, 0.45);
+      text-align: center;
+      animation: floatBox 3s ease-in-out infinite;
+    }
+
+    /* App Image */
+    .main-box img {
+      width: 150px;
+      margin-bottom: 20px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(255, 80, 160, 0.4);
+      animation: softPulse 2s infinite ease-in-out;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .btn-adv {
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      transition: 0.25s ease;
+    }
+
+    /* Button Glow Layer */
+    .btn-adv::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, #ff5ea5, #ff92c7, #ffbbdd);
+      transition: 0.4s;
+      z-index: -1;
+    }
+
+    .btn-adv:hover::before {
+      left: 0;
+    }
+
+    .btn-adv:hover {
+      transform: translateY(-6px) scale(1.05);
+      box-shadow: 0 12px 25px rgba(255, 0, 120, 0.35);
+    }
+
+    #existing {
+      background: rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(255, 150, 200, 0.5);
+    }
+
+    #new {
+      background: rgba(255, 255, 255, 0.3);
+      border: 2px solid rgba(255, 160, 210, 0.6);
+    }
+
+    /* Background Animation */
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Box Floating Animation */
+    @keyframes floatBox {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Soft Image Pulse */
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main-box">
+    <img src="https://img.sanishtech.com/u/68e5ce4806821ee140c06133c8b273c7.jpg" alt="App Icon">
+
+    <div class="btn-container">
+      <button id="existing" class="btn-adv" onclick="location.href='existing.html'">Existing User</button>
+      <button id="new" class="btn-adv" onclick="location.href='loginpage.html'">New User</button>
+
+    </div>
+  </div>
+
+</body>
+</html>

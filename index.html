@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Smart Periods App — Sakura Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Falling sakura petals are created by JS (see app.js) -->
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="app-title">
+        <span class="logo">🌸</span>
+        <span>Smart Periods — Sakura Demo</span>
+      </div>
+      <button id="analysisBtn" class="ghost-btn">
+        📊 View analysis
+      </button>
+    </header>
+
+    <div class="app">
+      <!-- LEFT: Self-report + controls + calendar -->
+      <section class="card">
+        <h2>
+          Self-Reported &amp; Controls
+          <span class="badge">user side</span>
+        </h2>
+
+        <!-- Pain + auto/manual -->
+        <div class="block">
+          <label>
+            Pain level <span class="small">(0–10)</span>
+          </label>
+          <input id="pain" type="range" min="0" max="10" value="4">
+          <div class="row-space top-gap-xs">
+            <div class="small">
+              Current: <span id="painVal" class="big-number">4</span>
+            </div>
+            <div class="toggle-line">
+              <span class="toggle-label">Auto-therapy</span>
+              <input id="autoTherapy" type="checkbox" checked>
+              <span class="small" id="modeLabel" style="color:#fb7185;">Auto</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cycle day -->
+        <div class="block">
+          <label>Cycle day</label>
+          <input id="cycleDay" type="number" min="1" max="35" value="3">
+          <div class="small top-gap-xxs">
+            Use this to track where you are in the current cycle.
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Symptoms -->
+        <div class="block">
+          <label>Symptoms</label>
+          <div class="symptoms" id="symptomBtns">
+            <button data-symptom="cramps">Cramps</button>
+            <button data-symptom="headache">Headache</button>
+            <button data-symptom="nausea">Nausea</button>
+            <button data-symptom="fatigue">Fatigue</button>
+            <button data-symptom="bloating">Bloating</button>
+            <button data-symptom="backpain">Back pain</button>
+          </div>
+        </div>
+
+        <!-- Therapy controls -->
+        <div class="block">
+          <label>Therapy controls</label>
+          <div class="controls">
+            <div class="stat">
+              <div class="small">Heat level</div>
+              <input id="heat" type="range" min="0" max="100" value="40">
+              <div class="small">
+                Selected: <span id="heatVal">40</span>%
+              </div>
+            </div>
+            <div class="stat">
+              <div class="small">Vibration intensity</div>
+              <input id="vibe" type="range" min="0" max="100" value="30">
+              <div class="small">
+                Selected: <span id="vibeVal">30</span>%
+              </div>
+            </div>
+          </div>
+          <div class="small top-gap-xxs">
+            Turn off Auto to adjust these manually.
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Apply + battery -->
+        <div class="row-space block">
+          <button id="applyTherapy" class="btn">
+            Apply therapy
+          </button>
+          <div class="small">Battery: <span id="battery">86%</span></div>
+        </div>
+
+        <!-- Connect wearable -->
+        <div class="block">
+          <button id="connectWearable" class="btn btn-full">
+            Simulate connect wearable
+          </button>
+        </div>
+
+        <div class="footer">
+          Tip: this demo simulates sensors. For real wearable integration use
+          Web Bluetooth / Native mobile APIs.
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Period Calendar Header Buttons -->
+        <div class="block row-gap">
+          <div class="calendar-actions">
+            <button id="addPeriodManual" class="btn btn-small">
+              ➕ Add period manually
+            </button>
+            <button id="addTodayPeriod" class="ghost-btn ghost-small">
+              Mark today
+            </button>
+          </div>
+
+          <!-- Calendar -->
+          <label>Period calendar</label>
+          <div class="calendar">
+            <div class="calendar-header">
+              <button id="prevMonthBtn" aria-label="Previous month">‹</button>
+              <div class="calendar-title" id="calendarLabel">Month YYYY</div>
+              <button id="nextMonthBtn" aria-label="Next month">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- days injected by JS -->
+            </div>
+            <div class="small top-gap-xxs">
+              Tap a day to toggle <strong>period start</strong>.
+              Pink days are tracked cycles.
+            </div>
+          </div>
+
+          <!-- Next period prediction -->
+          <div id="nextPeriodBox" class="next-period-box">
+            <div class="np-title">🌸 Period prediction</div>
+            <div class="small">
+              Last period start:
+              <span id="np_last">--</span>
+            </div>
+            <div class="small">
+              Avg cycle length:
+              <span id="np_avg">--</span>
+            </div>
+            <div class="small">
+              Next expected period:
+              <span id="np_next">--</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Live sensors & AI -->
+      <main class="card">
+        <h2>
+          Live sensors, safety &amp; AI decisions
+          <span class="badge">band side</span>
+        </h2>
+
+        <div class="sensor-row">
+          <div class="stat">
+            <div class="small">Heart rate (PPG)</div>
+            <div id="hr" class="big-number">78</div>
+          </div>
+          <div class="stat">
+            <div class="small">Skin temp (°C)</div>
+            <div id="temp" class="big-number">36.7</div>
+          </div>
+          <div class="stat">
+            <div class="small">GSR (stress)</div>
+            <div id="gsr" class="big-number">0.32</div>
+          </div>
+        </div>
+
+        <div class="sensor-row">
+          <div class="stat">
+            <div class="small">Motion (activity)</div>
+            <div id="motion" class="big-number">Low</div>
+          </div>
+          <div class="stat">
+            <div class="small">EMG (muscle tension)</div>
+            <div id="emg" class="big-number">12</div>
+          </div>
+          <div class="stat">
+            <div class="small">Skin safety</div>
+            <div id="safety" class="big-number success">OK</div>
+          </div>
+        </div>
+
+        <div class="block">
+          <label>AI recommendation (therapy)</label>
+          <div class="ai-box">
+            <div id="recommendation" class="small">
+              No recommendation yet — interact with controls or simulate sensors.
+            </div>
+          </div>
+        </div>
+
+        <div class="session-layout">
+          <div class="session-log">
+            <label>Session log</label>
+            <div class="log" id="log"></div>
+          </div>
+          <div class="session-history">
+            <label>Historical sessions</label>
+            <div class="history-box">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th class="small align-left">Date</th>
+                    <th class="small align-right">Cycle day</th>
+                    <th class="small align-right">Pain</th>
+                  </tr>
+                </thead>
+                <tbody id="history"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Analysis overlay -->
+  <div id="analysisOverlay" class="analysis-overlay hidden">
+    <div class="analysis-panel">
+      <div class="analysis-header">
+        <h3>Cycle analysis overview 🌸</h3>
+        <button id="closeAnalysis" class="icon-btn">✕</button>
+      </div>
+
+      <div class="analysis-grid">
+        <div class="analysis-card">
+          <div class="small">Average cycle length</div>
+          <div id="avgCycleVal" class="big-number">--</div>
+          <div class="small">Based on period start dates</div>
+        </div>
+        <div class="analysis-card">
+          <div class="small">Last period start</div>
+          <div id="lastPeriodVal" class="big-number">--</div>
+          <div class="small">Most recent tracked</div>
+        </div>
+        <div class="analysis-card">
+          <div class="small">Predicted next period</div>
+          <div id="nextPeriodVal" class="big-number">--</div>
+          <div class="small">Using avg cycle length</div>
+        </div>
+        <div class="analysis-card">
+          <div class="small">Total tracked periods</div>
+          <div id="totalPeriodsVal" class="big-number">0</div>
+          <div class="small">Calendar-marked starts</div>
+        </div>
+        <div class="analysis-card">
+          <div class="small">Average pain score</div>
+          <div id="avgPainVal" class="big-number">--</div>
+          <div class="small">From session history</div>
+        </div>
+        <div class="analysis-card">
+          <div class="small">Mode</div>
+          <div id="currentModeVal" class="big-number">Auto</div>
+          <div class="small">Auto vs manual preference</div>
+        </div>
+      </div>
+
+      <div class="analysis-section">
+        <h4>Recent periods</h4>
+        <div id="periodList" class="analysis-list small">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Manual period date modal -->
+  <div id="manualPeriodModal" class="modal-backdrop">
+    <div class="modal-panel">
+      <h3>Add period date</h3>
+      <label class="small">Select date</label>
+      <input type="date" id="manualPeriodInput" class="input">
+      <div class="modal-actions">
+        <button id="saveManualPeriod" class="btn btn-full">Save</button>
+        <button id="closePeriodModal" class="ghost-btn ghost-full">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
