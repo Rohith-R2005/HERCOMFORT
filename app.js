@@ -219,6 +219,9 @@ function updateSensorsUI() {
   emgEl.textContent = state.sensors.emg;
   motionEl.textContent = state.sensors.motion;
   batteryEl.textContent = state.battery + "%";
+  painEl.addEventListener("input", updateRecommendation);
+cycleDayEl.addEventListener("input", updateRecommendation);
+
 }
 
 /* ---------- Therapy Logic ---------- */
@@ -266,6 +269,33 @@ function updateRecommendation() {
   if (s.temp > 38) rec.push("High temp → Pause therapy");
 
   recEl.textContent = rec.join(". ");
+  async function updateRecommendation() {
+  const result = await callBackendML();
+
+  recEl.textContent = 
+    `ML suggests: ${result.therapy} | Predicted pain: ${result.predicted_pain.toFixed(1)}`;
+
+  if (state.autoTherapy) {
+    if (result.therapy.includes("light")) {
+      state.heat = 30; state.vibe = 0;
+    }
+    else if (result.therapy.includes("medium")) {
+      state.heat = 50; state.vibe = 20;
+    }
+    else if (result.therapy.includes("strong")) {
+      state.heat = 80; state.vibe = 50;
+    }
+    else {
+      state.heat = 70; state.vibe = 70;
+    }
+
+    heatEl.value = state.heat;
+    vibeEl.value = state.vibe;
+
+    applyTherapy(false);
+  }
+}
+
 
   /* Auto apply if allowed */
   if (state.autoTherapy) {
@@ -521,6 +551,24 @@ function init() {
   renderCalendar();
   updateNextPeriodPrediction();
   updateSensorsUI();
+}
+async function callBackendML() {
+  const payload = {
+    cycle_day: state.cycleDay,
+    pain: state.pain,
+    temp: state.sensors.temp,
+    gsr: state.sensors.gsr,
+    emg: state.sensors.emg
+  };
+
+  const res = await fetch("http://127.0.0.1:8000/predict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+  return data;
 }
 
 init();
